@@ -9,6 +9,7 @@ Le cockpit du chauffeur professionnel. Next.js 16 + Supabase + Vercel.
 - [x] Revenus (plateformes et clients privés, commissions, pourboires, part employeur)
 - [x] Dépenses (catégories, part employeur, suivi des remboursements)
 - [x] Paramètres (profil, objectif, part employeur par défaut)
+- [x] Import Uber : copier-coller de l'historique, ou extension Chrome DWAY Sync (synchro automatique)
 - [ ] Courses · Réservations · Clients · Véhicules · Statistiques · Factures
 
 ## Calcul du bénéfice réel
@@ -31,3 +32,14 @@ Hors impôts et cotisations sociales. Logique : `src/lib/finance.ts`.
 ## Déployer sur Vercel
 
 Importer le repo GitHub, ajouter les mêmes variables d'environnement, déployer.
+
+## Extension Chrome DWAY Sync
+
+Le dossier `extension/` contient une extension Chrome (Manifest V3). Elle ouvre l'historique des courses
+Uber avec la session déjà ouverte dans Chrome, toutes les 3 heures et à chaque visite, puis l'envoie à
+`/api/sync/uber`. Le chauffeur est reconnu par sa session DWAY. Aucun mot de passe Uber n'est lu.
+
+`/api/extension` télécharge l'extension en .zip, réglée sur l'adresse du site qui la sert.
+
+Sur Vercel, les variables `NEXT_PUBLIC_SUPABASE_*` doivent être actives pour **Production et Preview**,
+sinon chaque page de l'aperçu répond « Internal Server Error ».
