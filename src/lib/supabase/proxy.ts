@@ -1,7 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_PATHS = ['/', '/login', '/signup', '/auth']
+// /api : chaque route vérifie elle-même la session et répond en JSON.
+const PUBLIC_PATHS = ['/', '/login', '/signup', '/auth', '/api']
 
 function isPublic(pathname: string) {
   return PUBLIC_PATHS.some((p) => (p === '/' ? pathname === '/' : pathname.startsWith(p)))

@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "DWAY Sync",
+  "version": "1.0.0",
+  "description": "Envoie automatiquement tes courses Uber dans DWAY, directement depuis ton navigateur.",
+  "permissions": ["alarms", "storage"],
+  "host_permissions": ["https://drivers.uber.com/*", "__DWAY_ORIGIN__/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["https://drivers.uber.com/*"], "js": ["uber.js"], "run_at": "document_idle" }],
+  "action": { "default_popup": "popup.html", "default_title": "DWAY Sync" },
+  "icons": { "16": "icon-16.png", "48": "icon-48.png", "128": "icon-128.png" }
+}

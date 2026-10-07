@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { SOURCES, PAYMENT_METHODS } from '@/lib/constants'
 import { isoDate, parseAmount, parsePct, text, type FormState } from '@/lib/form'
-import { parseUberTrips, tripLabel } from '@/lib/import-uber'
+import { parseUberTrips } from '@/lib/import-uber'
+import { saveUberTrips } from '@/lib/save-uber'
 import { createClient } from '@/lib/supabase/server'
 
 function read(formData: FormData) {
@@ -71,33 +72,7 @@ export async function importUber(_: ImportState, formData: FormData): Promise<Im
   if (trips.length === 0) return { error: 'Aucune course reconnue. Copie bien le tableau « Historique des courses » d’Uber.' }
   if (share === null) return { error: 'La part employeur doit être entre 0 et 100 %.' }
 
-  const supabase = await createClient()
-  const dates = trips.map((t) => t.date).sort()
-  const { data: existing, error: readError } = await supabase
-    .from('revenues').select('date, label').eq('source', 'uber')
-    .gte('date', dates[0]).lte('date', dates[dates.length - 1])
-  if (readError) return { error: 'Import impossible. Réessaie.' }
-
-  const seen = new Set((existing ?? []).map((r) => `${r.date}|${r.label}`))
-  const rows = trips
-    .filter((t) => !seen.has(`${t.date}|${tripLabel(t)}`) && seen.add(`${t.date}|${tripLabel(t)}`))
-    .map((t) => ({
-      date: t.date,
-      source: 'uber',
-      label: tripLabel(t),
-      rides_count: t.cancelled ? 0 : 1,
-      gross_amount: t.amount,
-      platform_fees: 0, // Uber affiche déjà ta part, commission déduite
-      tips: 0,
-      payment_method: 'app',
-      employer_share_pct: share,
-      notes: 'Importé depuis l’historique Uber',
-    }))
-
-  if (rows.length > 0) {
-    const { error: dbError } = await supabase.from('revenues').insert(rows)
-    if (dbError) return { error: 'Import impossible. Réessaie.' }
-    refresh()
-  }
-  return { added: rows.length, skipped: trips.length - rows.length }
+  const result = await saveUberTrips(await createClient(), trips, share)
+  if ('added' in result && result.added > 0) refresh()
+  return result
 }
