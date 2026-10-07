@@ -4,8 +4,6 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { SOURCES, PAYMENT_METHODS } from '@/lib/constants'
 import { isoDate, parseAmount, parsePct, text, type FormState } from '@/lib/form'
-import { parseUberTrips } from '@/lib/import-uber'
-import { saveUberTrips } from '@/lib/save-uber'
 import { createClient } from '@/lib/supabase/server'
 
 function read(formData: FormData) {
@@ -61,18 +59,4 @@ export async function deleteRevenue(id: string) {
   const supabase = await createClient()
   await supabase.from('revenues').delete().eq('id', id)
   refresh()
-}
-
-export type ImportState = { error?: string; added?: number; skipped?: number } | undefined
-
-/** Importe l'historique Uber collé : une ligne de revenu par course, sans doublon. */
-export async function importUber(_: ImportState, formData: FormData): Promise<ImportState> {
-  const trips = parseUberTrips(String(formData.get('text') ?? ''))
-  const share = parsePct(formData.get('employer_share_pct'))
-  if (trips.length === 0) return { error: 'Aucune course reconnue. Copie bien le tableau « Historique des courses » d’Uber.' }
-  if (share === null) return { error: 'La part employeur doit être entre 0 et 100 %.' }
-
-  const result = await saveUberTrips(await createClient(), trips, share)
-  if ('added' in result && result.added > 0) refresh()
-  return result
 }

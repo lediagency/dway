@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
-import { Download, Pencil } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { DeleteButton } from '@/components/delete-button'
 import { PageHeader, Skeleton } from '@/components/page-header'
 import { PeriodTabs } from '@/components/period-tabs'
@@ -35,12 +35,7 @@ async function Revenus({ searchParams }: { searchParams: PageProps<'/revenus'>['
       <PageHeader
         title="Revenus"
         subtitle={`${money(t.gross)} brut · ${money(t.myRevenue)} pour toi · ${t.rides} courses`}
-        action={
-          <div className="flex flex-wrap items-center gap-3">
-            <Link href="/revenus/import" className="btn-ghost"><Download className="size-4" />Importer depuis Uber</Link>
-            <PeriodTabs current={period} basePath="/revenus" />
-          </div>
-        }
+        action={<PeriodTabs current={period} basePath="/revenus" />}
       />
 
       <section id="nouveau" className="card mb-6 scroll-mt-6 p-6">

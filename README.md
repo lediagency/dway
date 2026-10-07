@@ -9,7 +9,6 @@ Le cockpit du chauffeur professionnel. Next.js 16 + Supabase + Vercel.
 - [x] Revenus (plateformes et clients privés, commissions, pourboires, part employeur)
 - [x] Dépenses (catégories, part employeur, suivi des remboursements)
 - [x] Paramètres (profil, objectif, part employeur par défaut)
-- [x] Import Uber : copier-coller de l'historique des courses
 - [ ] Courses · Réservations · Clients · Véhicules · Statistiques · Factures
 
 ## Calcul du bénéfice réel
