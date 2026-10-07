@@ -1,4 +1,4 @@
-import type { ExpenseCategory, PaymentMethod, RevenueSource } from './types'
+import type { BookingStatus, ExpenseCategory, PaymentMethod, RevenueSource } from './types'
 
 export const SOURCES: Record<RevenueSource, string> = {
   uber: 'Uber',
@@ -37,4 +37,11 @@ export const CATEGORIES: Record<ExpenseCategory, string> = {
 export const DEFAULT_EXPENSE_SHARE: Partial<Record<ExpenseCategory, number>> = {
   carburant: 50,
   recharge: 50,
+}
+
+export const BOOKING_STATUS: Record<BookingStatus, string> = {
+  a_confirmer: 'À confirmer',
+  confirmee: 'Confirmée',
+  effectuee: 'Effectuée',
+  annulee: 'Annulée',
 }

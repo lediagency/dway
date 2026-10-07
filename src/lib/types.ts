@@ -29,6 +29,12 @@ export type Revenue = {
   payment_method: PaymentMethod
   employer_share_pct: number
   notes: string | null
+  kind: 'releve' | 'course'
+  start_time: string | null
+  pickup: string | null
+  dropoff: string | null
+  distance_km: number | null
+  booking_id: string | null
 }
 
 export type Expense = {
@@ -39,5 +45,26 @@ export type Expense = {
   amount: number
   employer_share_pct: number
   reimbursed: boolean
+  notes: string | null
+}
+
+export type BookingStatus = 'a_confirmer' | 'confirmee' | 'effectuee' | 'annulee'
+
+export type Booking = {
+  id: string
+  number: number
+  status: BookingStatus
+  client_name: string
+  client_phone: string | null
+  date: string
+  time: string
+  pickup: string
+  dropoff: string
+  passengers: number
+  vehicle: string | null
+  price: number
+  payment_method: PaymentMethod
+  flight_number: string | null
+  employer_share_pct: number
   notes: string | null
 }

@@ -10,11 +10,11 @@ const main = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/revenus', label: 'Revenus', icon: Wallet },
   { href: '/depenses', label: 'Dépenses', icon: Receipt },
+  { href: '/courses', label: 'Courses', icon: Route },
+  { href: '/reservations', label: 'Réservations', icon: CalendarClock },
 ] as const
 
 const soon = [
-  { label: 'Courses', icon: Route },
-  { label: 'Réservations', icon: CalendarClock },
   { label: 'Clients', icon: Users },
   { label: 'Véhicules', icon: Car },
   { label: 'Statistiques', icon: BarChart3 },
@@ -69,10 +69,10 @@ export function BottomNav() {
 }
 
 export function BottomNavView({ pathname = '' }: { pathname?: string }) {
-  const items = [...main, { href: '/parametres', label: 'Réglages', icon: Settings }]
+  const items = [main[0], main[4], main[3], main[1], main[2]]
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4">
+      <div className="mx-auto grid max-w-md grid-cols-5">
         {items.map(({ href, label, icon: Icon }) => {
           const active = pathname.startsWith(href)
           return (
