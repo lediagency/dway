@@ -9,7 +9,7 @@ export function PeriodTabs({ current, basePath }: { current: PeriodKey; basePath
           key={key}
           href={`${basePath}?p=${key}`}
           scroll={false}
-          className={`rounded-lg px-3 py-1.5 transition ${key === current ? 'bg-fg text-bg' : 'text-muted hover:text-fg'}`}
+          className={`rounded-lg px-3 py-1.5 transition ${key === current ? 'bg-surface-2 text-fg shadow-[inset_0_0_0_1px_var(--border)]' : 'text-muted hover:text-fg'}`}
         >
           {PERIODS[key]}
         </Link>

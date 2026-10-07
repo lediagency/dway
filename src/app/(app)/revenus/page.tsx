@@ -38,7 +38,7 @@ async function Revenus({ searchParams }: { searchParams: PageProps<'/revenus'>['
         action={<PeriodTabs current={period} basePath="/revenus" />}
       />
 
-      <section className="card mb-6 p-6">
+      <section id="nouveau" className="card mb-6 scroll-mt-6 p-6">
         <h2 className="mb-5 font-medium">Nouveau revenu</h2>
         <RevenueForm action={createRevenue} defaultShare={Number(profile?.default_employer_share ?? 0)} today={todayIso()} />
       </section>

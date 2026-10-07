@@ -1,34 +1,22 @@
 @import "tailwindcss";
 
+/* DWAY · « cockpit de nuit » : noir profond, or champagne, chiffres lisibles d'un coup d'œil. */
 :root {
-  --bg: #f6f6f4;
-  --surface: #ffffff;
-  --surface-2: #f0efec;
-  --border: #e6e4df;
-  --fg: #111110;
-  --muted: #6b6a65;
-  --accent: #a87a24;
-  --positive: #157a3c;
-  --negative: #b42318;
+  color-scheme: dark;
+  --bg: #08080a;
+  --surface: #111113;
+  --surface-2: #19191c;
+  --border: #242428;
+  --fg: #f4f2ec;
+  --muted: #8d8b85;
+  --accent: #d6aa52;
+  --accent-2: #f1d08a;
+  --accent-fg: #120d03;
+  --positive: #4ade80;
+  --negative: #f87171;
   /* Graphiques (palette validée daltonisme) */
-  --chart-rev: #b07d1e;
-  --chart-exp: #3d68c2;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b0b0c;
-    --surface: #141416;
-    --surface-2: #1c1c1f;
-    --border: #27272b;
-    --fg: #f3f3f1;
-    --muted: #8f8e8a;
-    --accent: #d2a24c;
-    --positive: #4ade80;
-    --negative: #f87171;
-    --chart-rev: #b88424;
-    --chart-exp: #5a85db;
-  }
+  --chart-rev: #c9973a;
+  --chart-exp: #5a85db;
 }
 
 @theme inline {
@@ -39,6 +27,8 @@
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-fg: var(--accent-fg);
   --color-positive: var(--positive);
   --color-negative: var(--negative);
   --color-chart-rev: var(--chart-rev);
@@ -51,24 +41,40 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-feature-settings: "tnum" 1;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 @utility card {
-  @apply rounded-2xl border border-border bg-surface;
+  @apply rounded-2xl border border-border bg-surface shadow-[inset_0_1px_0_0_rgb(255_255_255/0.04)];
+}
+/* Carte mise en avant : halo doré discret en haut. */
+@utility card-glow {
+  @apply card relative overflow-hidden;
+  background-image: radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+}
+@utility eyebrow {
+  @apply text-[11px] font-medium uppercase tracking-[0.16em] text-muted;
+}
+@utility text-gold {
+  @apply bg-gradient-to-r from-accent-2 to-accent bg-clip-text text-transparent;
 }
 @utility input {
-  @apply w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-[15px] text-fg outline-none transition placeholder:text-muted/70 focus:border-fg/40 focus:ring-4 focus:ring-fg/5;
+  @apply w-full rounded-xl border border-border bg-surface-2/60 px-3.5 py-2.5 text-[15px] text-fg outline-none transition placeholder:text-muted/60 focus:border-accent/60 focus:ring-4 focus:ring-accent/10;
 }
 @utility label {
   @apply mb-1.5 block text-[13px] font-medium text-muted;
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition outline-none focus-visible:ring-4 focus-visible:ring-accent/25 disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-fg text-bg hover:opacity-90;
+  @apply btn bg-gradient-to-b from-accent-2 to-accent text-accent-fg shadow-[0_8px_24px_-12px_var(--accent)] hover:brightness-105;
 }
 @utility btn-ghost {
-  @apply btn border border-border bg-surface text-fg hover:bg-surface-2;
+  @apply btn border border-border bg-surface text-fg hover:border-fg/20 hover:bg-surface-2;
 }
