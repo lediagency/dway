@@ -45,7 +45,10 @@ export function DashboardView({
             <p className="font-medium">Ton cockpit est prêt.</p>
             <p className="text-sm text-muted">Ajoute un premier revenu (une course ou ton relevé Uber de la semaine) pour voir ton bénéfice réel.</p>
           </div>
-          <Link href="/revenus" className="btn-primary"><Plus className="size-4" />Ajouter un revenu</Link>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/revenus/import" className="btn-ghost">Importer depuis Uber</Link>
+            <Link href="/revenus" className="btn-primary"><Plus className="size-4" />Ajouter un revenu</Link>
+          </div>
         </div>
       )}
 
