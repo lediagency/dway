@@ -18,13 +18,13 @@ async function LoginForm({ searchParams }: { searchParams: PageProps<'/login'>['
 export default function LoginPage({ searchParams }: PageProps<'/login'>) {
   return (
     <>
-      <h1 className="text-xl font-semibold">Bon retour</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Bon retour</h1>
       <p className="mb-6 mt-1 text-sm text-muted">Connecte-toi à ton cockpit.</p>
       <Suspense fallback={<AuthForm action={login} fields={fields} submit="Se connecter" />}>
         <LoginForm searchParams={searchParams} />
       </Suspense>
       <p className="mt-6 text-center text-sm text-muted">
-        Pas encore de compte ? <Link href="/signup" className="font-medium text-fg">Créer un compte</Link>
+        Pas encore de compte ? <Link href="/signup" className="font-medium text-accent hover:text-accent-2">Créer un compte</Link>
       </p>
     </>
   )

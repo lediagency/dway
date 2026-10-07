@@ -11,16 +11,17 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f6f6f4' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b0b0c' },
-  ],
+  themeColor: '#08080a',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <div aria-hidden className="ambient" />
+        {children}
+      </body>
     </html>
   )
 }

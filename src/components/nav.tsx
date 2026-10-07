@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  BarChart3, Car, CalendarClock, FileText, LayoutDashboard, Receipt, Route, Settings, Users, Wallet,
+  BarChart3, Car, CalendarClock, FileText, LayoutDashboard, Plus, Receipt, Route, Settings, Users, Wallet,
 } from 'lucide-react'
 
 const main = [
@@ -35,19 +35,20 @@ export function SideNavView({ pathname = '' }: { pathname?: string }) {
           <Link
             key={href}
             href={href}
-            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${
+            className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${
               active ? 'bg-surface-2 font-medium text-fg' : 'text-muted hover:bg-surface-2/60 hover:text-fg'
             }`}
           >
-            <Icon className="size-[18px]" strokeWidth={1.75} />
+            {active && <span className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-accent" />}
+            <Icon className={`size-[18px] ${active ? 'text-accent' : ''}`} strokeWidth={1.75} />
             {label}
           </Link>
         )
       })}
-      <p className="mb-1 mt-6 px-3 text-[11px] font-medium uppercase tracking-wider text-muted/70">Bientôt</p>
+      <p className="eyebrow mb-1 mt-6 px-3 text-muted/70">Bientôt</p>
       {soon.map(({ label, icon: Icon }) => (
-        <span key={label} className="flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-muted/60">
-          <Icon className="size-[18px]" strokeWidth={1.75} />
+        <span key={label} className="flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-muted/50">
+          <Icon className="size-[18px]" strokeWidth={1.5} />
           {label}
         </span>
       ))}
@@ -70,18 +71,24 @@ export function BottomNav() {
 
 export function BottomNavView({ pathname = '' }: { pathname?: string }) {
   const items = [...main, { href: '/parametres', label: 'Réglages', icon: Settings }]
+  const item = ({ href, label, icon: Icon }: (typeof items)[number]) => {
+    const active = pathname.startsWith(href)
+    return (
+      <Link key={href} href={href} className={`flex flex-col items-center gap-1 py-2.5 text-[11px] ${active ? 'text-accent' : 'text-muted'}`}>
+        <Icon className="size-5" strokeWidth={active ? 2 : 1.75} />
+        {label}
+      </Link>
+    )
+  }
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4">
-        {items.map(({ href, label, icon: Icon }) => {
-          const active = pathname.startsWith(href)
-          return (
-            <Link key={href} href={href} className={`flex flex-col items-center gap-1 py-2.5 text-[11px] ${active ? 'text-fg' : 'text-muted'}`}>
-              <Icon className="size-5" strokeWidth={active ? 2 : 1.75} />
-              {label}
-            </Link>
-          )
-        })}
+    <nav className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 lg:hidden">
+      <div className="glass mx-auto grid max-w-md grid-cols-5 items-center rounded-3xl px-1">
+        {items.slice(0, 2).map(item)}
+        {/* Saisie rapide : le geste le plus fréquent, entre deux courses */}
+        <Link href="/revenus#nouveau" aria-label="Ajouter un revenu" className="mx-auto -mt-6 grid size-14 place-items-center rounded-2xl bg-gradient-to-b from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-10px_var(--accent)]">
+          <Plus className="size-6" strokeWidth={2.25} />
+        </Link>
+        {items.slice(2).map(item)}
       </div>
     </nav>
   )

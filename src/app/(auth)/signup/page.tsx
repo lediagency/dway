@@ -13,11 +13,11 @@ const fields = [
 export default function SignupPage() {
   return (
     <>
-      <h1 className="text-xl font-semibold">Crée ton cockpit</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Crée ton cockpit</h1>
       <p className="mb-6 mt-1 text-sm text-muted">Gratuit, sans carte bancaire.</p>
       <AuthForm action={signup} fields={fields} submit="Créer mon compte" />
       <p className="mt-6 text-center text-sm text-muted">
-        Déjà inscrit ? <Link href="/login" className="font-medium text-fg">Se connecter</Link>
+        Déjà inscrit ? <Link href="/login" className="font-medium text-accent hover:text-accent-2">Se connecter</Link>
       </p>
     </>
   )
