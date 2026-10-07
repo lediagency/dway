@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { LogOut } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 import { Logo } from '@/components/logo'
 import { BottomNav, BottomNavView, SideNav, SideNavView } from '@/components/nav'
 import { createClient } from '@/lib/supabase/server'
@@ -36,6 +36,9 @@ export default function AppLayout({ children }: LayoutProps<'/'>) {
       </aside>
       <header className="flex items-center justify-between px-5 pt-5 lg:hidden">
         <Logo className="text-sm" />
+        <Link href="/parametres" className="rounded-lg p-2 text-muted hover:text-fg" aria-label="Paramètres">
+          <Settings className="size-5" strokeWidth={1.75} />
+        </Link>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-5 pb-28 pt-6 lg:px-10 lg:pb-12 lg:pt-10">{children}</main>
       <Suspense fallback={<BottomNavView />}>

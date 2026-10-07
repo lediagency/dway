@@ -64,7 +64,7 @@ async function Revenus({ searchParams }: { searchParams: PageProps<'/revenus'>['
                   </div>
                   <span className="text-right text-sm font-semibold">{money(s.mine)}</span>
                   <div className="flex shrink-0">
-                    <Link href={`/revenus/${r.id}`} className="rounded-lg p-2 text-muted transition hover:bg-surface-2 hover:text-fg" aria-label="Modifier">
+                    <Link href={r.kind === 'course' ? `/courses/${r.id}` : `/revenus/${r.id}`} className="rounded-lg p-2 text-muted transition hover:bg-surface-2 hover:text-fg" aria-label="Modifier">
                       <Pencil className="size-4" />
                     </Link>
                     <DeleteButton action={deleteRevenue.bind(null, r.id)} label="ce revenu" />

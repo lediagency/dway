@@ -21,3 +21,8 @@ export function isoDate(value: FormDataEntryValue | null) {
 }
 
 export type FormState = { error?: string; ok?: number } | undefined
+
+export function time(value: FormDataEntryValue | null) {
+  const s = String(value ?? '')
+  return /^\d{2}:\d{2}(:\d{2})?$/.test(s) ? s.slice(0, 5) : null
+}

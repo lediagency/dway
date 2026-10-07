@@ -1,15 +1,16 @@
 import Link from 'next/link'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
-import { Plus } from 'lucide-react'
+import { ArrowRight, Plus } from 'lucide-react'
 import { FlowChart, type Bucket } from '@/components/flow-chart'
 import { PageHeader, Skeleton } from '@/components/page-header'
 import { PeriodTabs } from '@/components/period-tabs'
 import { CATEGORIES, SOURCES } from '@/lib/constants'
-import { getExpenses, getProfile, getRevenues } from '@/lib/data'
+import { getBookings, getExpenses, getProfile, getRevenues } from '@/lib/data'
+import { bookingNumber, dayLabel, hhmm } from '@/lib/booking'
 import { computeTotals, splitExpense, splitRevenue } from '@/lib/finance'
 import { money, money0 } from '@/lib/format'
-import { daysBetween, parsePeriod, periodRange, type PeriodKey } from '@/lib/period'
+import { daysBetween, parsePeriod, periodRange, todayIso, type PeriodKey } from '@/lib/period'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -38,10 +39,12 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/dashboard
   const goalRange = periodRange('4semaines')
   const loadFrom = from < goalRange.from ? from : goalRange.from
 
-  const [profile, allRevenues, allExpenses] = await Promise.all([
+  const today = todayIso()
+  const [profile, allRevenues, allExpenses, upcoming] = await Promise.all([
     getProfile(),
     getRevenues(loadFrom, to),
     getExpenses(loadFrom, to),
+    getBookings('avenir', today),
   ])
 
   const revenues = allRevenues.filter((r) => r.date >= from)
@@ -118,6 +121,32 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/dashboard
         <Kpi label="Dépenses" value={money(t.myExpenses)} hint={t.expenses !== t.myExpenses ? `sur ${money(t.expenses)} payées` : 'à ta charge'} />
         <Kpi label="À te faire rembourser" value={money(t.toReimburse)} hint="part employeur des frais" />
       </div>
+
+      {upcoming.length > 0 && (
+        <section className="card mt-4 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-medium">Prochaines réservations</h2>
+            <Link href="/reservations" className="text-sm text-muted hover:text-fg">Tout voir</Link>
+          </div>
+          <ul className="divide-y divide-border">
+            {upcoming.slice(0, 3).map((b) => (
+              <li key={b.id} className="flex items-center gap-4 py-3 text-sm">
+                <div className="w-28 shrink-0">
+                  <p className="font-medium first-letter:uppercase">{dayLabel(b.date, today).split(' ').slice(0, 3).join(' ')}</p>
+                  <p className="text-xs text-muted">{hhmm(b.time)} · {bookingNumber(b.number)}</p>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{b.client_name}</p>
+                  <p className="flex min-w-0 items-center gap-1 text-xs text-muted">
+                    <span className="truncate">{b.pickup}</span><ArrowRight className="size-3 shrink-0" /><span className="truncate">{b.dropoff}</span>
+                  </p>
+                </div>
+                <span className="font-semibold">{money(Number(b.price))}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="card mt-4 p-6">
         <h2 className="mb-4 font-medium">Revenus et dépenses</h2>
