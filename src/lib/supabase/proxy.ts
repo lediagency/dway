@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // /api : chaque route vérifie elle-même la session et répond en JSON.
-const PUBLIC_PATHS = ['/', '/login', '/signup', '/auth', '/api']
+const PUBLIC_PATHS = ['/', '/login', '/signup', '/mot-de-passe-oublie', '/auth', '/api']
 
 function isPublic(pathname: string) {
   return PUBLIC_PATHS.some((p) => (p === '/' ? pathname === '/' : pathname.startsWith(p)))
@@ -33,6 +33,13 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims()
   const user = data?.claims
   const { pathname } = request.nextUrl
+
+  // Lien e-mail Supabase renvoyé vers la racine du site (adresse de retour non autorisée) : on le confirme quand même.
+  if (pathname === '/' && request.nextUrl.searchParams.has('code')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/confirm'
+    return NextResponse.redirect(url)
+  }
 
   if (!user && !isPublic(pathname)) {
     const url = request.nextUrl.clone()

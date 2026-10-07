@@ -16,5 +16,10 @@ export async function GET(request: NextRequest) {
       ? await supabase.auth.verifyOtp({ type, token_hash: tokenHash })
       : { error: new Error('Lien invalide') }
 
-  return NextResponse.redirect(new URL(error ? '/login?erreur=lien' : '/dashboard', origin))
+  // Réinitialisation du mot de passe : l'action a posé la page de destination dans un cookie.
+  const next = request.cookies.get('dway_next')?.value
+  const target = error ? '/login?erreur=lien' : type === 'recovery' || next === '/nouveau-mot-de-passe' ? '/nouveau-mot-de-passe' : '/dashboard'
+  const response = NextResponse.redirect(new URL(target, origin))
+  if (next) response.cookies.delete('dway_next')
+  return response
 }
