@@ -7,13 +7,13 @@ export function LogoMark({ className = 'size-7' }: { className?: string }) {
     <svg viewBox="0 0 24 24" className={className} aria-hidden>
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f1d08a" />
-          <stop offset="1" stopColor="#c9973a" />
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="1" stopColor="#a1a1aa" />
         </linearGradient>
       </defs>
       <rect width="24" height="24" rx="7" fill={`url(#${id})`} />
-      <path d="M7 6.5h4.2a5.5 5.5 0 0 1 0 11H7z" fill="none" stroke="#120d03" strokeWidth="2.2" />
-      <circle cx="17.6" cy="17" r="1.6" fill="#120d03" />
+      <path d="M7 6.5h4.2a5.5 5.5 0 0 1 0 11H7z" fill="none" stroke="#09090b" strokeWidth="2.2" />
+      <circle cx="17.6" cy="17" r="1.6" fill="#09090b" />
     </svg>
   )
 }

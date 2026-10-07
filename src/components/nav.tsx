@@ -81,11 +81,11 @@ export function BottomNavView({ pathname = '' }: { pathname?: string }) {
     )
   }
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-5 items-center">
+    <nav className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 lg:hidden">
+      <div className="glass mx-auto grid max-w-md grid-cols-5 items-center rounded-3xl px-1">
         {items.slice(0, 2).map(item)}
         {/* Saisie rapide : le geste le plus fréquent, entre deux courses */}
-        <Link href="/revenus#nouveau" aria-label="Ajouter un revenu" className="mx-auto -mt-5 grid size-14 place-items-center rounded-2xl bg-gradient-to-b from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-10px_var(--accent)]">
+        <Link href="/revenus#nouveau" aria-label="Ajouter un revenu" className="mx-auto -mt-6 grid size-14 place-items-center rounded-2xl bg-gradient-to-b from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-10px_var(--accent)]">
           <Plus className="size-6" strokeWidth={2.25} />
         </Link>
         {items.slice(2).map(item)}

@@ -20,11 +20,11 @@ const steps = [
 export default function Home() {
   return (
     <div className="relative overflow-hidden">
-      {/* Halo doré derrière le hero */}
+      {/* Halo lumineux derrière le hero */}
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-[-18rem] h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
 
       <div className="relative mx-auto flex max-w-6xl flex-col px-5">
-        <header className="flex items-center justify-between py-6">
+        <header className="glass sticky top-3 z-20 mt-3 flex items-center justify-between rounded-2xl py-3 pl-5 pr-3">
           <Logo className="text-sm" />
           <nav className="flex items-center gap-2">
             <Link href="/login" className="btn px-3 text-muted hover:text-fg">Connexion</Link>
@@ -39,7 +39,7 @@ export default function Home() {
               Le cockpit du chauffeur professionnel
             </p>
             <h1 className="mt-6 text-[2.75rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-              Sache enfin ce que tu gagnes <span className="text-gold">vraiment.</span>
+              Sache enfin ce que tu gagnes <span className="text-shine">vraiment.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">
               DWAY centralise tes revenus, tes dépenses et tes courses, et calcule ton bénéfice réel en temps réel.
@@ -56,7 +56,7 @@ export default function Home() {
           <CockpitPreview />
         </section>
 
-        <section className="border-y border-border py-6">
+        <section className="card py-6">
           <p className="eyebrow text-center">Tous tes revenus au même endroit</p>
           <ul className="mt-4 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm font-medium text-fg/70">
             {platforms.map((p) => <li key={p}>{p}</li>)}
