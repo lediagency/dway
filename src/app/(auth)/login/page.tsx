@@ -23,6 +23,9 @@ export default function LoginPage({ searchParams }: PageProps<'/login'>) {
       <Suspense fallback={<AuthForm action={login} fields={fields} submit="Se connecter" />}>
         <LoginForm searchParams={searchParams} />
       </Suspense>
+      <p className="mt-4 text-right text-sm">
+        <Link href="/mot-de-passe-oublie" className="text-muted hover:text-fg">Mot de passe oublié ?</Link>
+      </p>
       <p className="mt-6 text-center text-sm text-muted">
         Pas encore de compte ? <Link href="/signup" className="font-medium text-accent hover:text-accent-2">Créer un compte</Link>
       </p>

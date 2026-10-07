@@ -1,6 +1,6 @@
 'use server'
 
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
@@ -43,6 +43,27 @@ export async function signup(_: AuthState, formData: FormData): Promise<AuthStat
   // Confirmation e-mail désactivée dans Supabase : session ouverte directement.
   if (data.session) redirect('/dashboard')
   return { message: 'Compte créé. Clique sur le lien reçu par e-mail pour l’activer.' }
+}
+
+export async function forgotPassword(_: AuthState, formData: FormData): Promise<AuthState> {
+  const email = String(formData.get('email') ?? '').trim()
+  if (!email) return { error: 'Indique ton e-mail.' }
+  const origin = (await headers()).get('origin') ?? process.env.NEXT_PUBLIC_SITE_URL ?? ''
+  // Après le clic dans l'e-mail, /auth/confirm enverra vers la page « nouveau mot de passe ».
+  ;(await cookies()).set('dway_next', '/nouveau-mot-de-passe', { maxAge: 60 * 60, httpOnly: true, sameSite: 'lax', secure: true, path: '/' })
+  const supabase = await createClient()
+  await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/auth/confirm` })
+  // Même réponse que l'e-mail existe ou non.
+  return { message: 'Si un compte existe avec cet e-mail, tu vas recevoir un lien pour choisir un nouveau mot de passe.' }
+}
+
+export async function updatePassword(_: AuthState, formData: FormData): Promise<AuthState> {
+  const password = String(formData.get('password') ?? '')
+  if (password.length < 8) return { error: 'Le mot de passe doit faire au moins 8 caractères.' }
+  const supabase = await createClient()
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) return { error: 'Lien expiré. Redemande un e-mail de réinitialisation.' }
+  redirect('/dashboard')
 }
 
 export async function logout() {

@@ -31,3 +31,6 @@ Hors impôts et cotisations sociales. Logique : `src/lib/finance.ts`.
 ## Déployer sur Vercel
 
 Importer le repo GitHub, ajouter les mêmes variables d'environnement, déployer.
+
+
+Sur Vercel, les variables `NEXT_PUBLIC_SUPABASE_*` doivent être actives pour **Production et Preview**.
